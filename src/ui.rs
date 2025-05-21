@@ -5,7 +5,7 @@
 //! * Centralizes all drawing helpers in a single module.
 
 use crate::app::{field_with_focus, App, Focus, SPIN_FRAMES};
-use ipconfig::OperStatus;
+use crate::platform::OperStatus;
 use ratatui::{
     layout::{Alignment, Constraint, Rect},
     style::{Color, Modifier, Style},
