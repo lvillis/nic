@@ -2,11 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2025-05-21
+
+### 🐛 Bug Fixes
+
+- Ci
+
 ## [0.1.3] - 2025-05-21
 
 ### 🐛 Bug Fixes
 
 - Ci
+
+### ⚙️ Miscellaneous Tasks
+
+- Release nic version 0.1.3
 
 ## [0.1.2] - 2025-05-21
 
