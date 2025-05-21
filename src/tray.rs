@@ -1,12 +1,11 @@
-#![allow(clippy::needless_return)]
-//! System-tray loop.
+#![cfg(windows)]
 
 use anyhow::{Context, Result};
 use crossbeam_channel::select;
 use std::{sync::Arc, time::Duration};
 use tray_icon::{
     menu::{Menu, MenuEvent, MenuItem},
-    Icon, MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent,
+    Icon, MouseButton, TrayIconBuilder, TrayIconEvent,
 };
 
 #[derive(Debug, Clone)]
@@ -15,8 +14,8 @@ pub enum Msg {
     Quit,
 }
 
-// embed application icon
 const EMBED_ICON: &[u8] = include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/logo.ico"));
+
 fn embedded_icon() -> Result<Icon> {
     use ico::IconDir;
     let ico = IconDir::read(std::io::Cursor::new(EMBED_ICON)).context("ICO parse failed")?;
@@ -28,8 +27,6 @@ fn embedded_icon() -> Result<Icon> {
     )?)
 }
 
-// Windows: service the win32 message queue so the tray receives clicks.
-#[cfg(windows)]
 fn pump_win32_messages() {
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         DispatchMessageW, PeekMessageW, TranslateMessage, MSG, PM_REMOVE,
@@ -42,32 +39,27 @@ fn pump_win32_messages() {
         }
     }
 }
-#[cfg(not(windows))]
-fn pump_win32_messages() {}
 
-/// Create tray icon and drive event loop.
-///
-/// `launch_tui` is invoked to (re)start the TUI child process.
 pub fn run_tray<F>(mut launch_tui: F) -> Result<()>
 where
     F: FnMut() + Send + 'static,
 {
     let icon = embedded_icon()?;
 
-    let open_item = MenuItem::new("Open",  true, None);
-    let quit_item = MenuItem::new("Quit",  true, None);
+    let open_item = MenuItem::new("Open", true, None);
+    let quit_item = MenuItem::new("Quit", true, None);
 
-    let tray_menu = Menu::new();
-    tray_menu.append_items(&[&open_item, &quit_item])?;
+    let menu = Menu::new();
+    menu.append_items(&[&open_item, &quit_item])?;
 
     let _tray = TrayIconBuilder::new()
         .with_icon(icon)
         .with_tooltip("nic – Network Config")
-        .with_menu(Box::new(tray_menu))
+        .with_menu(Box::new(menu))
         .with_menu_on_left_click(false)
         .build()?;
 
-    launch_tui(); // auto-open once
+    launch_tui();
 
     let open_id = Arc::new(open_item.id().clone());
     let quit_id = Arc::new(quit_item.id().clone());
@@ -93,7 +85,7 @@ where
                     if me.id == *open_id {
                         launch_tui();
                     } else if me.id == *quit_id {
-                        break; // exit loop -> quit
+                        break;
                     }
                 }
             },
