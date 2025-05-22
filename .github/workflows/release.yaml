@@ -44,10 +44,6 @@ jobs:
             use-cross: false
 
           - os: windows-latest
-            target: x86_64-pc-windows-gnu
-            use-cross: false
-
-          - os: windows-latest
             target: x86_64-pc-windows-msvc
             use-cross: false
 
