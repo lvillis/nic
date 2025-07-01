@@ -26,7 +26,7 @@ once_cell = { version = "1.19" }
 regex = { version = "1.10" }
 
 # tui stack, default features disabled for smaller binary
-ratatui = { version = "0.30.0-alpha.4", default-features = false, features = ["crossterm"] }
+ratatui = { version = "0.30.0-alpha.5", default-features = false, features = ["crossterm"] }
 crossterm = { version = "0.29.0", default-features = false }
 ctrlc = { version = "3.4.7" }
 
