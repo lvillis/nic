@@ -33,7 +33,7 @@ ctrlc = { version = "3.4.7" }
 [target.'cfg(windows)'.dependencies]
 ipconfig = { version = "0.3" }
 windows-sys = { version = "0.60.2", features = ["Win32_System_Console", "Win32_UI_WindowsAndMessaging"] }
-tray-icon = { version = "0.21.0" }
+tray-icon = { version = "0.21.1" }
 ico = { version = "0.4.0" }
 
 [target.'cfg(unix)'.dependencies]
