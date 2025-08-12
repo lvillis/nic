@@ -20,7 +20,7 @@ exclude = [
 ]
 
 [dependencies]
-anyhow = { version = "1.0.98" }
+anyhow = { version = "1.0.99" }
 crossbeam-channel = { version = "0.5.15" }
 once_cell = { version = "1.19" }
 regex = { version = "1.10" }
